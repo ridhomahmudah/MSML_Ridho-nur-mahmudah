@@ -7,28 +7,37 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v1
+    
+    # Memberikan izin kepada bot untuk melakukan push/write ke repository
+    permissions:
+      contents: write
 
+    steps:
+    # Perbarui versi ke @v4 agar stabil dan didukung GitHub saat ini
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    # Perbarui versi ke @v4
     - name: Set up Python 3.12
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v4
       with:
         python-version: '3.12'
 
+    # Menginstal library yang kamu butuhkan untuk pemrosesan teks & data
     - name: Install Dependencies
       run: |
         pip install pandas numpy scikit-learn Sastrawi nltk
 
+    # Perbaikan path: Langsung arahkan ke folder preprocessing
     - name: Run Automation Preprocessing
       run: |
-        python "Eksperimen_SML_Ridho-nur-mahmudah/preprocessing/automate_Ridho-nur-mahmudah.py"
+        python preprocessing/automate_Ridho-nur-mahmudah.py
 
+    # Mengamankan proses push dataset baru hasil olahan automation kembali ke repo
     - name: Commit and Push Changes
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git add .
-        # Perintah ini hanya akan jalan jika ada perubahan file (data baru)
         git commit -m "Update preprocessed data [skip ci]" || echo "No changes to commit"
-        git push
+        git push origin main
