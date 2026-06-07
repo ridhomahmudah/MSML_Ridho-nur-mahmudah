@@ -23,10 +23,10 @@ jobs:
       with:
         python-version: '3.12'
 
-    # Menginstal library yang kamu butuhkan untuk pemrosesan teks & data
+    # Menginstal library yang kamu butuhkan (Sudah ditambah requests)
     - name: Install Dependencies
       run: |
-        pip install pandas numpy scikit-learn Sastrawi nltk
+        pip install pandas numpy scikit-learn Sastrawi nltk requests
 
     # Perbaikan path: Langsung arahkan ke folder preprocessing
     - name: Run Automation Preprocessing
